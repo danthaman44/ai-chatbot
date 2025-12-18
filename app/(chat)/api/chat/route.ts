@@ -39,6 +39,7 @@ import type { ChatMessage } from "@/lib/types";
 import { convertToUIMessages, generateUUID } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
 import { type PostRequestBody, postRequestBodySchema } from "./schema";
+import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
 
 export const maxDuration = 60;
 
@@ -169,7 +170,8 @@ export async function POST(request: Request) {
           selectedChatModel.includes("thinking");
 
         const result = streamText({
-          model: getLanguageModel(selectedChatModel),
+          model: DEFAULT_CHAT_MODEL,
+          // model: getLanguageModel(selectedChatModel),
           system: systemPrompt({ selectedChatModel, requestHints }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
